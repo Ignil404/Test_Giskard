@@ -19,7 +19,7 @@ Test_Giskard/
 │   ├── rag_system.py            # Система RAG с поиском по знаниям
 │   ├── knowledge_base.py        # Загрузка базы знаний
 │   ├── evaluate_rag.py          # Скрипт оценки с Context Precision и Context Recall
-│   ├── evaluate_rag2_gemini.py  # Скрипт оценки с CorrectnessMetric(более щадящее к лимитам)
+│   ├── evaluate_rag2_gemini.py  # Скрипт оценки с CorrectnessMetric(меньше нагрузка на api)
 │   ├── evaluate_rag2_groq.py    # Скрипт оценки с CorrectnessMetric
 │   ├── generate_questions.py    # Генерация тестовых вопросов
 │   ├── view_questions.py        # Просмотр вопросов
@@ -84,7 +84,7 @@ uv run python source/view_questions.py
 ### LLM Client (`llm_client.py`)
 Поддерживает два LLM провайдера:
 - **GeminiClient**: использует Google Gemini API
-- **GroqClient**: использует Groq API (на базе Llama-3.1-8B)
+- **GroqClient**: использует Groq API
 
 ### RAG System (`rag_system.py`)
 Система ответов на основе знаний:
@@ -113,7 +113,7 @@ uv run python source/view_questions.py
 
 ## Поддерживаемые метрики
 
-- **CorrectnessMetric**: Оценка корректности ответов на основе знаниевой базы
+- **CorrectnessMetric**: Оценка корректности ответов на основе базы данных
 - **Context Precision**: Точность извлеченного контекста
 - **Context Recall**: Полнота извлеченного контекста
 
