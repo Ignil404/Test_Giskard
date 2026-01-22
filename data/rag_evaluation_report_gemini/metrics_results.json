@@ -1,0 +1,1 @@
+{"cc82abcb-9c0b-49f0-b8c7-228404a6b9f3": {"correctness": true}, "7fff8127-8f5d-4eb0-8eda-e1e9058c7d0a": {"correctness": false, "correctness_reason": "The agent provided a long list of Bezdomny's thoughts, but the reference answer only included one specific thought: 'An Englishman, look, he's not even hot in gloves.'"}}

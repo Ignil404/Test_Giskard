@@ -1,23 +1,18 @@
 import os
-import json
-import time
 import pandas as pd
 from dotenv import load_dotenv
-from giskard import scan
 from giskard.rag import QATestset, evaluate, AgentAnswer, KnowledgeBase, RAGReport, generate_testset
 from giskard.rag.metrics import CorrectnessMetric
 from giskard.llm.client import set_default_client
-from llm_client import GeminiClient, GroqClient
+from llm_client import GeminiClient
 from rag_system import RAGSystem
 from knowledge_base import get_mm
 
 from giskard.rag.metrics.ragas_metrics import ragas_context_precision, ragas_context_recall
 
 load_dotenv()
-#gemini_client = GeminiClient()
-groq_client = GroqClient()
-#set_default_client(gemini_client)
-set_default_client(groq_client)
+gemini_client = GeminiClient()
+set_default_client(gemini_client)
 
 def load_testset():
     candidates = [
@@ -59,11 +54,11 @@ try:
         testset=testset,
         knowledge_base=knowledge_base,
         metrics=metrics_list,
-        llm_client=groq_client)
+        llm_client=gemini_client)
     print("Evaluation complete")
     try:
-        rag_report.save("data/rag_evaluation_report")
-        print("Saved RAGReport to data/rag_evaluation_report/")
+        rag_report.save("data/rag_evaluation_report_gemini")
+        print("Saved RAGReport to data/rag_evaluation_report_gemini/")
     except Exception as e:
         print(f"Warning: failed to save RAGReport: {e}")
 

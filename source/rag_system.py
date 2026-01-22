@@ -9,8 +9,8 @@ load_dotenv()
 
 class RAGSystem:
     def __init__(self):
-        #self.client = GeminiClient()
-        self.client = GroqClient()
+        self.client = GeminiClient()
+        #self.client = GroqClient()
         self.knowledge_base = get_mm()
 
     def answer(self, question: str) -> str:
