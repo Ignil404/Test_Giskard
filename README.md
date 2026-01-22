@@ -15,21 +15,22 @@
 ```
 Test_Giskard/
 ├── source/
-│   ├── llm_client.py          # LLM клиенты (Gemini, Groq)
-│   ├── rag_system.py          # Система RAG с поиском по знаниям
-│   ├── knowledge_base.py      # Загрузка базы знаний
-│   ├── evaluate_rag.py        # Скрипт оценки с Context Precision и Context Recall
-│   ├── evaluate_rag2.py       # Скрипт оценки с CorrectnessMetric(с ним меньше фансов потерять все лимиты)
-│   ├── generate_questions.py  # Генерация тестовых вопросов
-│   ├── view_questions.py      # Просмотр вопросов
-│   └── test/                  # Тесты(Использовались на начальном этапе, сейчас бесполезны)
+│   ├── llm_client.py            # LLM клиенты (Gemini, Groq)
+│   ├── rag_system.py            # Система RAG с поиском по знаниям
+│   ├── knowledge_base.py        # Загрузка базы знаний
+│   ├── evaluate_rag.py          # Скрипт оценки с Context Precision и Context Recall
+│   ├── evaluate_rag2_gemini.py  # Скрипт оценки с CorrectnessMetric(более щадящее к лимитам)
+│   ├── evaluate_rag2_groq.py    # Скрипт оценки с CorrectnessMetric
+│   ├── generate_questions.py    # Генерация тестовых вопросов
+│   ├── view_questions.py        # Просмотр вопросов
+│   └── test/                    # Тесты(Использовались на начальном этапе, сейчас бесполезны)
 ├── data/
-│   ├── MM.txt                 # База знаний
-│   ├── testset.json          # Набор тестовых вопросов
-│   ├── testset.jsonl         # Вопросы, которые не помещаются в запрос
-│   └── evaluation_report/    # Результаты оценки
-├── pyproject.toml            # Конфигурация проекта
-└── .env                       # API ключи
+│   ├── MM.txt                   # База знаний
+│   ├── testset.json             # Набор тестовых вопросов
+│   ├── testset.jsonl            # Вопросы, которые не помещаются в запрос
+│   └── evaluation_report/       # Результаты оценки
+├── pyproject.toml               # Конфигурация проекта
+└── .env                         # API ключи
 ```
 
 ## Требования
@@ -59,7 +60,11 @@ uv sync
 
 ```bash
 cd Test_Giskard
-uv run python source/evaluate_rag2.py
+uv run python source/evaluate_rag.py
+
+или(с более щадящей нагрузкой на лимиты)
+uv run python source/evaluate_rag2_gemini.py
+uv run python source/evaluate_rag2_groq.py
 ```
 
 ### Генерация тестовых вопросов
