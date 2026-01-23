@@ -62,7 +62,7 @@ uv sync
 cd Test_Giskard
 uv run python source/evaluate_rag.py
 
-или(с более щадящей нагрузкой на лимиты)
+или ( с более щадящей нагрузкой на лимиты)
 uv run python source/evaluate_rag2_gemini.py
 uv run python source/evaluate_rag2_groq.py
 ```
@@ -101,25 +101,18 @@ uv run python source/view_questions.py
 ## Ограничения и советы
 
 ### Rate Limit при использовании
-- Groq free tier имеет лимит 6000/12000 токенов в минуту
-- Gemini имеет 5 запросов в минуту(но больше контекста)
+- Groq free имеет лимит 6000/12000 токенов в минуту
+- Gemini free имеет 5 запросов в минуту(но больше контекста)
 
 
 ## Результаты
 
 Результаты оценки сохраняются в:
 - `data/evaluation_report/` - полный отчет Giskard
-- `data/report.html` - HTML визуализация
+- `data/rag_evaluation_report(gemini/groq)/report.html` - HTML визуализация
 
 ## Поддерживаемые метрики
 
 - **CorrectnessMetric**: Оценка корректности ответов на основе базы данных
 - **Context Precision**: Точность извлеченного контекста
 - **Context Recall**: Полнота извлеченного контекста
-
-## Лицензия
-
-Проект использует открытые библиотеки:
-- Giskard - для оценки RAG систем
-- Google Generative AI - для доступа к Gemini
-- Groq - для доступа к Llama моделям
