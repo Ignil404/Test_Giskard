@@ -10,19 +10,17 @@ from giskard.rag.question_generators import (
 )
 from giskard.llm.client import set_default_client
 from llm_client import GeminiClient, GroqClient
-from knowledge_base import get_mm
+from knowledge_base import get_mm, get_mm_paragraphs
 
 warnings.filterwarnings("ignore")
 
 load_dotenv()
 
 llm_client1 = GeminiClient()
-# set_default_client(llm_client1)
-llm_client2 = GroqClient()
 set_default_client(llm_client1)
-text = get_mm()
-
-paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+#llm_client2 = GroqClient()
+#set_default_client(llm_client2)
+paragraphs = get_mm_paragraphs()
 df = pd.DataFrame({"text": paragraphs})
 
 knowledge_base = KnowledgeBase.from_pandas(df, columns=["text"])

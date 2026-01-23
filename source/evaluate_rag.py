@@ -8,7 +8,7 @@ from giskard.rag.metrics import CorrectnessMetric
 from giskard.llm.client import set_default_client
 from llm_client import GeminiClient, GroqClient
 from rag_system import RAGSystem
-from knowledge_base import get_mm
+from knowledge_base import get_mm, get_mm_paragraphs
 from giskard.rag.metrics.ragas_metrics import ragas_context_precision, ragas_context_recall
 
 load_dotenv()
@@ -36,8 +36,7 @@ testset = load_testset()
 
 rag_system = RAGSystem()
 
-text = get_mm()
-paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+paragraphs = get_mm_paragraphs()
 knowledge_base_df = pd.DataFrame({"text": paragraphs})
 knowledge_base = KnowledgeBase.from_pandas(knowledge_base_df, columns=["text"])
 

@@ -9,25 +9,26 @@ from giskard.llm.client.base import ChatMessage
 load_dotenv()
 
 class GeminiClient(LLMClient):
-    def __init__(self):
+    def __init__(self, model: str = "gemini-2.5-flash-lite"):
         self.client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
+        self.model = model
 
     def complete(self, messages: list[ChatMessage], temperature: float = 0.5, max_tokens: int = 1000, **kwargs) -> ChatMessage:
         prompt = "\n".join(f"{m.role}: {m.content}" for m in messages)
         response = self.client.models.generate_content(
-            model='gemini-2.5-flash-lite',
+            model=self.model,
             contents=prompt,
             config = {"temperature": temperature, "maxOutputTokens": max_tokens}
         )
         return ChatMessage(role="assistant", content=response.text)
 
     def get_config(self) -> dict:
-        return {"model": "gemini-2.5-flash-lite", "api": "google-genai"}
+        return {"model": self.model, "api": "google-genai"}
 
     def chat(self, messages: list[ChatMessage]) -> str:
         prompt = "\n".join([f"{message.role}: {message.content}" for message in messages])
         response = self.client.models.generate_content(
-            model='gemini-2.5-flash-lite',
+            model=self.model,
             contents=prompt
         )
         return response.text
