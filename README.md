@@ -82,7 +82,7 @@ uv run python source/view_questions.py
 ## Компоненты
 
 ### LLM Client (`llm_client.py`)
-Поддерживает два LLM провайдера:
+Поддерживает две LLM:
 - **GeminiClient**: использует Google Gemini API
 - **GroqClient**: использует Groq API
 
