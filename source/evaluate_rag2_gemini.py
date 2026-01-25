@@ -7,9 +7,11 @@ from giskard.llm.client import set_default_client
 from llm_client import GeminiClient
 from rag_system import RAGSystem
 from knowledge_base import get_mm, get_mm_paragraphs
-
 from giskard.rag.metrics.ragas_metrics import ragas_context_precision, ragas_context_recall
+from logger import configure_logging, get_logger
 
+configure_logging()
+logger = get_logger(__name__)
 load_dotenv()
 gemini_client = GeminiClient()
 set_default_client(gemini_client)
@@ -22,10 +24,10 @@ def load_testset():
     for p in candidates:
         if os.path.exists(p):
             try:
-                print(f"Loading testset from {p}")
+                logger.info("Loading testset", path=p)
                 return QATestset.load(p)
             except Exception as e:
-                print(f"Failed to load {p}: {e}")
+                logger.error("Failed to load testset", path=p, error=str(e))
     raise FileNotFoundError("No testset found in data;")
 
 
@@ -44,8 +46,7 @@ def answer_fn(question: str, history: list[dict] = None) -> AgentAnswer:
 
 
 metrics_list = [CorrectnessMetric(name="correctness")]
-print("Using metrics:", [m.name for m in metrics_list])
-
+logger.info("Using metrics", metrics=[m.name for m in metrics_list])
 
 try:
     rag_report = evaluate(
@@ -54,14 +55,12 @@ try:
         knowledge_base=knowledge_base,
         metrics=metrics_list,
         llm_client=gemini_client)
-    print("Evaluation complete")
+    logger.info("Evaluation complete")
     try:
         rag_report.save("data/rag_evaluation_report_gemini")
-        print("Saved RAGReport to data/rag_evaluation_report_gemini/")
+        logger.info("Saved RAGReport to data/rag_evaluation_report_gemini/", path="data/rag_evaluation_report_gemini/")
     except Exception as e:
-        print(f"Warning: failed to save RAGReport: {e}")
+        logger.warning("Failed to save RAGReport", path="data/rag_evaluation_report_gemini/", error=str(e))
 
 except Exception as e:
-    print(f"Evaluation failed: {e}")
-    import traceback
-    traceback.print_exc()
+    logger.error("Evaluation failed", error=str(e))

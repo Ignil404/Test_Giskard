@@ -3,6 +3,10 @@ import sys
 import json
 import os
 from datetime import datetime
+from source.logger import configure_logging, get_logger
+
+configure_logging()
+logger = get_logger(__name__)
 
 
 def run_pipeline():
@@ -14,26 +18,24 @@ def run_pipeline():
     ]
 
     for script, desc in scripts:
-        print(f'\n{desc}...')
+        logger.info("Running script", script=script, description=desc)
         result = subprocess.run([sys.executable, script], cwd='.', capture_output=True, text=True)
         
         if result.returncode != 0:
             if '429' in result.stderr or 'RESOURCE_EXHAUSTED' in result.stderr:
-                print(f"\n API квота превышена: {script}")
-                print(f"Сообщение об ошибке:\n{result.stderr}\n")
+                logger.error("API quota exceeded", script=script, error_message=result.stderr)
                 sys.exit(1)
             else:
-                print(f"stdout:\n{result.stdout}")
-                print(f"stderr:\n{result.stderr}")
+                logger.error("Script failed", script=script, stdout=result.stdout, stderr=result.stderr)
                 sys.exit(1)
         else:
-            print(result.stdout)
+            logger.info("Script output", script=script, stdout=result.stdout)
 
 def main():
     try:
         run_pipeline()
     except Exception as e:
-        print(f"\nОшибка: {e}")
+        logger.exception("Pipeline error", error=str(e))
         sys.exit(1)
 
 if __name__ == "__main__":
