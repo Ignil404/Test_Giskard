@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import warnings
 from dotenv import load_dotenv
 from giskard import scan
 from giskard.rag import QATestset, evaluate, AgentAnswer, KnowledgeBase, RAGReport, generate_testset
@@ -11,6 +12,8 @@ from rag_system import RAGSystem
 from knowledge_base import get_mm, get_mm_paragraphs
 from giskard.rag.metrics.ragas_metrics import ragas_context_precision, ragas_context_recall
 from logger import configure_logging, get_logger
+
+warnings.filterwarnings('ignore')
 
 configure_logging()
 logger = get_logger(__name__)
@@ -37,17 +40,19 @@ def load_testset():
 
 
 testset = load_testset()
-
+logger.info("Initializing RAGSystem")
 rag_system = RAGSystem()
-
 paragraphs = get_mm_paragraphs()
 knowledge_base_df = pd.DataFrame({"text": paragraphs})
 knowledge_base = KnowledgeBase.from_pandas(knowledge_base_df, columns=["text"])
 
 
 def answer_fn(question: str, history: list[dict] = None) -> AgentAnswer:
+    logger.info("Answering question", question=question)
     answer_text = rag_system.answer(question)
-    return AgentAnswer(message=answer_text, documents=paragraphs)
+    retrieved_docs = rag_system.get_retrieved_documents(question)
+    logger.info("Retrieved documents", retrieved_docs=retrieved_docs)
+    return AgentAnswer(message=answer_text, documents=retrieved_docs)
 
 
 metrics_list = [ragas_context_precision, ragas_context_recall]
@@ -68,4 +73,4 @@ try:
         logger.warning("Failed to save RAGReport", path="data/rag_evaluation_report/", error=str(e))
 
 except Exception as e:
-    logger.error("Evaluation failed", error=str(e))
+    logger.error("Evaluation failed", error=str(e), exc_info=True)

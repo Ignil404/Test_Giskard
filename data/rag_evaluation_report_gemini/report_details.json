@@ -1,1 +1,1 @@
-{"recommendation": "Your RAG system struggles with the \"Бездомный\" topic, indicated by a score of 0.0. Prioritize improving the quality and relevance of documents within your knowledge base for this specific topic."}
+{"recommendation": "The most critical action to improve the RAG system is to enhance its performance on \"Разговоры и споры\" topics, as indicated by the very low score of 0.25. Additionally, focus on improving the handling of \"distracting element\" questions, which currently score 0.0."}

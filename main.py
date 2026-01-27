@@ -14,26 +14,24 @@ def run_pipeline():
         ('source/generate_questions.py', 'Generating questions'),
         ('source/view_questions.py', 'Viewing questions'),
         ('source/evaluate_rag.py', 'Evaluating system'),
-        ('source/present_results.py', 'Presenting results')
+        # ('source/present_results.py', 'Presenting results')
     ]
 
     for script, desc in scripts:
         logger.info("Running script", script=script, description=desc)
-        result = subprocess.run([sys.executable, script], cwd='.', capture_output=True, text=True)
+        result = subprocess.run([sys.executable, script], cwd='.', stdout=sys.stdout, stderr=sys.stderr, text=True)
         
         if result.returncode != 0:
-            if '429' in result.stderr or 'RESOURCE_EXHAUSTED' in result.stderr:
-                logger.error("API quota exceeded", script=script, error_message=result.stderr)
-                sys.exit(1)
-            else:
-                logger.error("Script failed", script=script, stdout=result.stdout, stderr=result.stderr)
-                sys.exit(1)
+            logger.error("Script failed", script=script)
+            sys.exit(1)
         else:
-            logger.info("Script output", script=script, stdout=result.stdout)
+            logger.info("Script completed successfully", script=script)
 
 def main():
     try:
+        logger.info("Starting pipeline")
         run_pipeline()
+        logger.info("Pipeline completed successfully")
     except Exception as e:
         logger.exception("Pipeline error", error=str(e))
         sys.exit(1)

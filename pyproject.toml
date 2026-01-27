@@ -15,4 +15,9 @@ dependencies = [
     "datasets>=2.14.0,<3.0.0",
     "ragas",
     "structlog>=24.1.0",
+    "sentence-transformers>=5.2.2",
+    "langchain-community>=0.3.21",
+    "langchain-text-splitters>=0.3.11",
+    "chromadb>=1.4.1",
+    "openai>=2.15.0",
 ]
