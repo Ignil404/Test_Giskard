@@ -68,3 +68,23 @@ TypeError: argument of type 'NoneType' is not iterable
 2026-01-27 16:36:17 - __main__ - INFO - [2m2026-01-27T13:36:17.907048Z[0m [[32m[1minfo     [0m] [1mRunning script                [0m [[0m[1m[34m__main__[0m][0m [36mdescription[0m=[35m'Evaluating system'[0m [36mscript[0m=[35msource/evaluate_rag.py[0m
 2026-01-27 16:38:46 - __main__ - INFO - [2m2026-01-27T13:38:46.120117Z[0m [[32m[1minfo     [0m] [1mScript completed successfully [0m [[0m[1m[34m__main__[0m][0m [36mscript[0m=[35msource/evaluate_rag.py[0m
 2026-01-27 16:38:46 - __main__ - INFO - [2m2026-01-27T13:38:46.121791Z[0m [[32m[1minfo     [0m] [1mPipeline completed successfully[0m [[0m[1m[34m__main__[0m][0m
+2026-01-28 15:44:11 - __main__ - INFO - {"event": "Starting pipeline", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T12:44:11.341212Z"}
+2026-01-28 15:44:11 - __main__ - INFO - {"script": "source/generate_questions.py", "description": "Generating questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T12:44:11.345291Z"}
+2026-01-28 15:53:21 - __main__ - INFO - {"event": "Starting pipeline", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T12:53:21.491736Z"}
+2026-01-28 15:53:21 - __main__ - INFO - {"script": "source/generate_questions.py", "description": "Generating questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T12:53:21.493601Z"}
+{"event": "Starting pipeline", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:13.545813Z"}
+{"script": "source/generate_questions.py", "description": "Generating questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:13.548420Z"}
+{"script": "source/generate_questions.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:45.389345Z"}
+{"script": "source/view_questions.py", "description": "Viewing questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:45.390144Z"}
+{"script": "source/view_questions.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:50.634591Z"}
+{"script": "source/evaluate_rag.py", "description": "Evaluating system", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T13:59:50.634804Z"}
+{"script": "source/evaluate_rag.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:01:31.187064Z"}
+{"event": "Pipeline completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:01:31.187797Z"}
+{"event": "Starting pipeline", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:13.403222Z"}
+{"script": "source/generate_questions.py", "description": "Generating questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:13.404377Z"}
+{"script": "source/generate_questions.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:43.989052Z"}
+{"script": "source/view_questions.py", "description": "Viewing questions", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:43.989847Z"}
+{"script": "source/view_questions.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:49.731172Z"}
+{"script": "source/evaluate_rag.py", "description": "Evaluating system", "event": "Running script", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:19:49.731484Z"}
+{"script": "source/evaluate_rag.py", "event": "Script completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:22:18.057636Z"}
+{"event": "Pipeline completed successfully", "logger": "__main__", "level": "info", "timestamp": "2026-01-28T14:22:18.059107Z"}

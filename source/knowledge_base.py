@@ -16,7 +16,8 @@ def load_knowledge_base(file_path: str) -> str:
 def get_mm() -> str:
     return load_knowledge_base("data/MM.txt")
 
-def get_mm_paragraphs(text: str) -> list[str]:
+def get_mm_paragraphs() -> list[str]:
+    text = get_mm()
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=200,
@@ -42,7 +43,7 @@ def prepare_vector_store(persist_directory: str = "data/chroma_db") -> Chroma:
         )
     
     logger.info("Creating new vector store")
-    chunks = get_mm_paragraphs(get_mm())
+    chunks = get_mm_paragraphs()
     documents = [Document(page_content=chunk) for chunk in chunks]
     vector_store = Chroma.from_documents(
         documents=documents,

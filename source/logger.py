@@ -3,17 +3,19 @@ import logging
 import sys
 from pathlib import Path
 
-def configure_logging(log_file: str = "logs/app.log", log_level: str = "INFO"):
+def configure_logging(log_file: str = "logs/app.log"):
     log_path = Path(log_file)
     log_path.parent.mkdir(parents=True, exist_ok=True)
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(structlog.stdlib.ProcessorFormatter(processor=structlog.dev.ConsoleRenderer()))
+    json_handler = logging.FileHandler(log_file)
+    json_handler.setFormatter(structlog.stdlib.ProcessorFormatter(processor=structlog.processors.JSONRenderer()))
     logging.basicConfig(
-        level=log_level,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
+        level=logging.INFO,
         handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler(log_path),
-        ],
+            console_handler,
+            json_handler,
+        ]
     )
     structlog.configure(
         processors=[
@@ -25,7 +27,7 @@ def configure_logging(log_file: str = "logs/app.log", log_level: str = "INFO"):
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
             structlog.processors.UnicodeDecoder(),
-            structlog.processors.JSONRenderer(),
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],
         wrapper_class=structlog.stdlib.BoundLogger,
         context_class=dict,

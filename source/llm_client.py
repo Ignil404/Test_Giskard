@@ -68,7 +68,7 @@ class GroqClient(LLMClient):
 
     def chat(self, messages: list[ChatMessage]) -> str:
         formatted_messages = [
-            {"role": message.role(), "content": message.content}
+            {"role": message.role, "content": message.content}
             for message in messages if message.content
         ]
         response = self.client.chat.completions.create(
