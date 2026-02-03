@@ -21,7 +21,7 @@ def get_mm() -> str:
 def get_mm_paragraphs() -> list[str]:
     text = get_mm()
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
+        chunk_size=5000,
         chunk_overlap=200,
         length_function=len,
         separators=["\n\n", "\n", ". ", " ", ""]

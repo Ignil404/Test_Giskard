@@ -63,11 +63,10 @@ Test_Giskard/
 │   ├── knowledge_base.py        # База знаний и векторное хранилище
 │   ├── evaluate_rag.py          # Оценка и отчёт
 │   ├── generate_questions.py    # Генерация тестсета
-│   ├── view_questions.py        # Просмотр тестсета
-│   └── test/                    # Черновые тесты
+│   └── view_questions.py        # Просмотр тестсета                  
 ├── data/
 │   ├── MM.txt                   # База знаний
-│   ├── testset.json             # Тестсет (JSONL)
+│   ├── testset.json             # Тестсет
 │   ├── testset.jsonl            # Альтернативный формат
 │   └── rag_evaluation_report/   # Отчёт
 ├── pyproject.toml
@@ -77,8 +76,7 @@ Test_Giskard/
 ## Конфигурация
 
 Обязательные переменные окружения:
-- `GEMINI_API_KEY`
-- `GROQ_API_KEY`
+- `GEMINI_API_KEY` / `GROQ_API_KEY`
  - `LLM_CLIENT` (`gemini` или `groq`)
 
 Дополнительно:

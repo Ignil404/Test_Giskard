@@ -8,7 +8,7 @@ from giskard.rag.question_generators import (
     distracting_questions,
 )
 from giskard.llm.client import set_default_client
-from llm_client import GeminiClient, GroqClient
+from llm_client import get_llm_client
 from knowledge_base import get_mm, get_mm_paragraphs
 from logger import configure_logging, get_logger
 
@@ -19,10 +19,8 @@ logger = get_logger(__name__)
 
 load_dotenv()
 
-llm_client1 = GeminiClient()
-set_default_client(llm_client1)
-# llm_client2 = GroqClient()
-# set_default_client(llm_client2)
+llm_client = get_llm_client()
+set_default_client(llm_client)
 
 paragraphs = get_mm_paragraphs()
 df = pd.DataFrame({"text": paragraphs})
