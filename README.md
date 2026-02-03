@@ -1,117 +1,91 @@
-# Test_Giskard - RAG System Evaluation
+# Test_Giskard
 
-Система для тестирования и оценки RAG (Retrieval Augmented Generation) с использованием Giskard.
+RAG-система для романа «Мастер и Маргарита» и набор утилит для генерации вопросов и оценки качества ответов через Giskard.
 
-## Описание
+## Что внутри
 
-Этот проект реализует RAG систему на базе знаний (knowledge base) с поддержкой:
-- **Gemini** и **Groq** LLM клиентов
-- Оценки качества ответов с помощью Giskard
-- Извлечения релевантной информации из базы знаний
-- Генерации и обработки набора тестовых вопросов
+Проект делает три вещи:
+- готовит базу знаний и векторное хранилище
+- отвечает на вопросы по контексту
+- оценивает ответы метриками Giskard и строит HTML-отчёт
+
+## Быстрый старт
+
+1. Установите зависимости:
+```bash
+uv sync
+```
+
+2. Создайте `.env`:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
+LLM_PROVIDER=gemini
+```
+
+3. Запустите основной сценарий:
+```bash
+uv run python main.py
+```
+
+Отчёт будет в `data/rag_evaluation_report/report.html`.
+
+## Команды
+
+Запуск оценки:
+```bash
+uv run python source/evaluate_rag.py
+```
+
+Генерация тестсета:
+```bash
+uv run python source/generate_questions.py
+```
+
+Просмотр тестсета:
+```bash
+uv run python source/view_questions.py
+```
+
+## Как это работает
+
+1. `knowledge_base.py` читает `data/MM.txt`, режет текст на чанки и строит `Chroma`-векторное хранилище.
+2. `rag_system.py` достаёт релевантные чанки, формирует промпт и вызывает LLM.
+3. `evaluate_rag.py` прогоняет тестсет и считает метрики (Context Precision/Recall), затем формирует HTML-отчёт.
 
 ## Структура проекта
 
 ```
 Test_Giskard/
 ├── source/
-│   ├── llm_client.py            # LLM клиенты (Gemini, Groq)
-│   ├── rag_system.py            # Система RAG с поиском по знаниям
-│   ├── knowledge_base.py        # Загрузка базы знаний
-│   ├── evaluate_rag.py          # Скрипт оценки с Context Precision и Context Recall
-│   ├── evaluate_rag2_gemini.py  # Скрипт оценки с CorrectnessMetric(меньше нагрузка на api)
-│   ├── evaluate_rag2_groq.py    # Скрипт оценки с CorrectnessMetric
-│   ├── generate_questions.py    # Генерация тестовых вопросов
-│   ├── view_questions.py        # Просмотр вопросов
-│   └── test/                    # Тесты(Использовались на начальном этапе, сейчас бесполезны)
+│   ├── llm_client.py            # LLM клиенты
+│   ├── rag_system.py            # RAG пайплайн и ответы
+│   ├── knowledge_base.py        # База знаний и векторное хранилище
+│   ├── evaluate_rag.py          # Оценка и отчёт
+│   ├── generate_questions.py    # Генерация тестсета
+│   ├── view_questions.py        # Просмотр тестсета
+│   └── test/                    # Черновые тесты
 ├── data/
 │   ├── MM.txt                   # База знаний
-│   ├── testset.json             # Набор тестовых вопросов
-│   ├── testset.jsonl            # Вопросы, которые не помещаются в запрос
-│   └── evaluation_report/       # Результаты оценки
-├── pyproject.toml               # Конфигурация проекта
-└── .env                         # API ключи
+│   ├── testset.json             # Тестсет (JSONL)
+│   ├── testset.jsonl            # Альтернативный формат
+│   └── rag_evaluation_report/   # Отчёт
+├── pyproject.toml
+└── .env
 ```
 
-## Требования
+## Конфигурация
 
-- Python 3.11
-- UV package manager
+Обязательные переменные окружения:
+- `GEMINI_API_KEY`
+- `GROQ_API_KEY`
+ - `LLM_CLIENT` (`gemini` или `groq`)
 
-## Установка
+Дополнительно:
+- можно сменить модель через `GeminiClient(model="...")` в `source/llm_client.py`
+- можно переключиться на Groq через `LLM_CLIENT=groq`
 
-1. Клонируйте репозиторий или перейдите в папку проекта
-2. Создайте файл `.env` с необходимыми ключами API:
-
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-3. Установите зависимости:
-
-```bash
-uv sync
-```
-
-## Использование
-
-### Запуск оценки RAG системы
-
-```bash
-cd Test_Giskard
-uv run python source/evaluate_rag.py
-
-или ( с более щадящей нагрузкой на лимиты)
-uv run python source/evaluate_rag2_gemini.py
-uv run python source/evaluate_rag2_groq.py
-```
-
-### Генерация тестовых вопросов
-
-```bash
-uv run python source/generate_questions.py
-```
-
-### Просмотр вопросов из набора тестов
-
-```bash
-uv run python source/view_questions.py
-```
-
-## Компоненты
-
-### LLM Client (`llm_client.py`)
-Поддерживает две LLM:
-- **GeminiClient**: использует Google Gemini API
-- **GroqClient**: использует Groq API
-
-### RAG System (`rag_system.py`)
-Система ответов на основе знаний:
-- Загружает базу знаний из файла
-- Ищет релевантную информацию по ключевым словам вопроса
-- Формирует промпт с контекстом для LLM
-- Возвращает ответ на основе предоставленного контекста
-
-### Knowledge Base (`knowledge_base.py`)
-Загрузка и управление базой знаний:
-- Читает информацию из файла `data/MM.txt`
-- Предоставляет текстовый контент для RAG системы
-
-## Ограничения
-
-### Rate Limit при использовании
-- Groq free имеет лимит 6000/12000 токенов в минуту
-- Gemini free имеет 5 запросов в минуту(но больше контекста)
-
-
-## Результаты
-
-Результаты оценки сохраняются в:
-- `data/evaluation_report/` - полный отчет Giskard
-- `data/rag_evaluation_report(gemini/groq)/report.html` - HTML визуализация
-
-## Поддерживаемые метрики
+## Метрики
 
 - **CorrectnessMetric**: Оценка корректности ответов на основе базы данных
 - **Context Precision**: Точность извлеченного контекста

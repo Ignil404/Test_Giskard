@@ -9,3 +9,7 @@ wheels/
 .env
 .venv
 .DS_Store
+
+/old
+/test
+/source/compare_db.py

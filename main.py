@@ -1,8 +1,5 @@
 import subprocess
 import sys
-import json
-import os
-from datetime import datetime
 from source.logger import configure_logging, get_logger
 
 configure_logging()
@@ -14,7 +11,6 @@ def run_pipeline():
         ('source/generate_questions.py', 'Generating questions'),
         ('source/view_questions.py', 'Viewing questions'),
         ('source/evaluate_rag.py', 'Evaluating system'),
-        # ('source/present_results.py', 'Presenting results')
     ]
 
     for script, desc in scripts:

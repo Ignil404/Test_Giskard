@@ -1,9 +1,11 @@
 import os
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
 from logger import get_logger
+from dotenv import load_dotenv
 
 logger = get_logger(__name__)
 
@@ -29,19 +31,22 @@ def get_mm_paragraphs() -> list[str]:
     return chunks
 
 def prepare_vector_store(persist_directory: str = "data/chroma_db") -> Chroma:
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-        model_kwargs={'device': 'cpu'},
-        encode_kwargs={'normalize_embeddings': True}
-    )
-    
+    load_dotenv()
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", api_key=os.getenv("GEMINI_API_KEY"))
+
+    # embeddings = HuggingFaceEmbeddings(
+    #     model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    #     model_kwargs={'device': 'cpu'},
+    #     encode_kwargs={'normalize_embeddings': True}
+    # )
+
     if os.path.exists(persist_directory):
         logger.info("Loading existing vector store", path=persist_directory)
         return Chroma(
             persist_directory=persist_directory,
             embedding_function=embeddings
         )
-    
+
     logger.info("Creating new vector store")
     chunks = get_mm_paragraphs()
     documents = [Document(page_content=chunk) for chunk in chunks]
@@ -50,6 +55,8 @@ def prepare_vector_store(persist_directory: str = "data/chroma_db") -> Chroma:
         embedding=embeddings,
         persist_directory=persist_directory
     )
-    vector_store.persist()
     logger.info("Vector store created and persisted", path=persist_directory)
     return vector_store
+
+if __name__ == "__main__":
+    prepare_vector_store()

@@ -1,7 +1,7 @@
 import warnings
 from dotenv import load_dotenv
 from knowledge_base import prepare_vector_store
-from llm_client import GeminiClient, GroqClient
+from llm_client import get_llm_client
 from giskard.llm.client.base import ChatMessage
 from logger import get_logger, configure_logging
 
@@ -13,9 +13,8 @@ logger = get_logger(__name__)
 
 class RAGSystem:
     def __init__(self, persist_directory: str = "data/chroma_db"):
-        self.client = GeminiClient()
+        self.client = get_llm_client()
         self.vector_store = prepare_vector_store(persist_directory)
-        #self.client = GroqClient()
         logger.info("RAGSystem initialized")
 
     def get_retrieved_documents(self, query: str, top_k: int = 5) -> list[str]:

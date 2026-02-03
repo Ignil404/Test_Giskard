@@ -1,4 +1,3 @@
-import os
 import warnings
 import pandas as pd
 from dotenv import load_dotenv
