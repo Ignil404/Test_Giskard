@@ -15,7 +15,8 @@ def configure_logging(log_file: str = "logs/app.log"):
         handlers=[
             console_handler,
             json_handler,
-        ]
+        ],
+        force=True,
     )
     structlog.configure(
         processors=[
